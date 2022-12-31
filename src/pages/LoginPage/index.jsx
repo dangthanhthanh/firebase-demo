@@ -1,11 +1,11 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Button, Form, FormGroup, Input, Label } from "reactstrap";
 import errorMessage from "../../assets/common/erroMessage";
-import { auth } from "../../libs/firebase";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const LoginPage = () => {
+  const {login}=useContext(AuthContext)
   const [error,setError]=useState('')
   const [fromvalue,setFromvalue]=useState({
     email:'',
@@ -23,7 +23,7 @@ const LoginPage = () => {
     const {password,email}=fromvalue;
     if(error){setError('')}
     try {
-      await signInWithEmailAndPassword(auth,email,password)
+      await login(null,email,password);
     } catch (error) {
       const errorCode = error.code;
       console.log(errorCode);

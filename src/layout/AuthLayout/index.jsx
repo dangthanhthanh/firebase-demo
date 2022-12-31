@@ -1,4 +1,4 @@
-import { signInWithPopup } from "firebase/auth";
+import { useContext } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import {
   Button,
@@ -11,7 +11,7 @@ import {
   Container,
   Row,
 } from "reactstrap";
-import { auth, facebookProvider, googleProvider } from "../../libs/firebase";
+import { AuthContext } from "../../contexts/AuthContext";
 function generratetitle(pathname){
   if(pathname==='/register'){
     return 'register'
@@ -20,30 +20,14 @@ function generratetitle(pathname){
     return 'login'
   }
   else{
-    return 'home'
+    return ''
   }
 }
 
 const AuthLayout = () => {
   const {pathname}=useLocation()
   const title = generratetitle(pathname)
-  const handleLoginSocial = async (type) =>{
-    switch(type){
-      case "facebook":
-        const result = await signInWithPopup(auth, facebookProvider)
-        console.log(result)
-        break
-      case "google":
-        const gg = await signInWithPopup(auth, googleProvider)
-        console.log(gg)
-        break;
-
-      case "github":
-      case "apple": 
-      default:
-      break  
-    }
-  }
+  const {login}=useContext(AuthContext)
   return (
     <Container className="mt-4">
       <Row className="justify-content-center">
@@ -57,10 +41,10 @@ const AuthLayout = () => {
             </CardBody>
             <CardFooter>
               <ButtonGroup className="w-100">
-                <Button color="primary" outline onClick={()=>{handleLoginSocial('google')}}>
+                <Button color="primary" outline onClick={()=>{login('google')}}>
                   Google
                 </Button>
-                <Button color="primary" outline onClick={()=>{handleLoginSocial('facebook')}}>
+                <Button color="primary" outline onClick={()=>{login('facebook')}}>
                   Facebook
                 </Button>
                 <Button color="primary" outline>

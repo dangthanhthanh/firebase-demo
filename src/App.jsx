@@ -1,26 +1,8 @@
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
 import AppRoutes from "./AppRoutes";
-import { auth } from "./libs/firebase";
-import { Spinner } from "reactstrap";
-
+import AuthProvider from "./contexts/AuthContext";
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      console.log("user: " + user);
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-      }
-      setIsLoading(false);
-    });
-  }, []);
-
-  return isLoading ? <Spinner /> : <AppRoutes currentUser={currentUser}/>;
+  return<AuthProvider>
+    <AppRoutes />
+  </AuthProvider>
 }
-
 export default App;

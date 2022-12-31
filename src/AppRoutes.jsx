@@ -1,21 +1,28 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import AuthLayout from "./layout/AuthLayout";
 import HomePage from "./pages/HomePage";
-import MainLayout from "./layout/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-const RequiredAuth=({children, currentUser})=>{
-  console.log(currentUser)
+import { useContext } from "react";
+import { AuthContext } from "./contexts/AuthContext";
+import { UpdateProfile } from "./pages/updateProfile/UpdateProfile";
+const RequiredAuth=({children})=>{
+  const {currentUser}=useContext(AuthContext)
+  const location=useLocation()
   if(!currentUser){return <Navigate to="/login"/>;}
+  console.log(currentUser)
+  if(location.pathname !== '/update-profile' && !currentUser.displayName && !currentUser.photoURL){
+    return<Navigate to='/update-profile'/>
+  }
   return children;
 }
 const NoRequiredAuth=({children, currentUser})=>{
-  console.log(currentUser)
   if(currentUser){return <Navigate to="/"/>;}
   return children;
 }
-const AppRoutes = ({currentUser}) => {
-  console.log(currentUser);
+const AppRoutes = () => {
+const {currentUser} = useContext(AuthContext)
+console.log(currentUser)
   return (
     <BrowserRouter>
       <Routes>
@@ -27,9 +34,6 @@ const AppRoutes = ({currentUser}) => {
             </RequiredAuth>
           }
         />
-        {/* <Route element={<MainLayout />}>
-          <Route index path="/" element={<HomePage />} />
-        </Route> */}
         <Route element={<AuthLayout />}>
           <Route path="login" element={
             <NoRequiredAuth currentUser={currentUser}>
@@ -41,11 +45,12 @@ const AppRoutes = ({currentUser}) => {
               <RegisterPage/>
             </NoRequiredAuth>
           } />
-
-          {/* <Route path="register" element={<Register />} /> */}
-          {/* <Route path="handler/:mode" element={<EmailActionHandler />} /> */}
         </Route>
-        {/* <Route path="*" element={<NoMatch />} /> */}
+          <Route path="update-profile" element={
+           <RequiredAuth currentUser={currentUser}>
+            <UpdateProfile/>
+          </RequiredAuth>
+      } />
       </Routes>
     </BrowserRouter>
   );

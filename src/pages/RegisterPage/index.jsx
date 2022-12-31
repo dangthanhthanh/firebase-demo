@@ -1,12 +1,11 @@
-import { async } from "@firebase/util";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Button, Form, FormGroup, Input, Label } from "reactstrap";
-import { auth } from "../../libs/firebase";
 import errorMessage from "../../assets/common/erroMessage";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const RegisterPage = () => {
+  const {register}=useContext(AuthContext)
   const [error,setError]=useState('')
   const [fromvalue,setFromvalue]=useState({
     email:'',
@@ -30,7 +29,7 @@ const RegisterPage = () => {
       return
     }
     try {
-      await createUserWithEmailAndPassword(auth,email,password)
+      await register(email,password)
     } catch (error) {
       const errorCode = error.code;
       console.log(errorCode);
