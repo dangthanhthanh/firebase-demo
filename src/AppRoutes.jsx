@@ -9,15 +9,19 @@ import { UpdateProfile } from "./pages/updateProfile/UpdateProfile";
 const RequiredAuth=({children})=>{
   const {currentUser}=useContext(AuthContext)
   const location=useLocation()
-  if(!currentUser){return <Navigate to="/login"/>;}
+  if(!currentUser)return <Navigate to="/login"/>;
   console.log(currentUser)
-  if(location.pathname !== '/update-profile' && !currentUser.displayName && !currentUser.photoURL){
+  if(location.pathname !== '/update-profile' 
+  && !currentUser.displayName 
+  && !currentUser.photoURL){
     return<Navigate to='/update-profile'/>
   }
   return children;
 }
-const NoRequiredAuth=({children, currentUser})=>{
-  if(currentUser){return <Navigate to="/"/>;}
+const NoRequiredAuth=({children})=>{
+  const {currentUser}=useContext(AuthContext);
+  if(currentUser)
+  return <Navigate to="/"/>;
   return children;
 }
 const AppRoutes = () => {
@@ -29,25 +33,25 @@ console.log(currentUser)
         <Route
           path="/"
           element={
-            <RequiredAuth currentUser={currentUser}>
+            <RequiredAuth>
               <HomePage/>
             </RequiredAuth>
           }
         />
         <Route element={<AuthLayout />}>
           <Route path="login" element={
-            <NoRequiredAuth currentUser={currentUser}>
+            <NoRequiredAuth>
               <LoginPage/>
             </NoRequiredAuth>
           } />
-          <Route path="register" element={
-            <NoRequiredAuth currentUser={currentUser}>
+          <Route path="/register" element={
+            <NoRequiredAuth>
               <RegisterPage/>
             </NoRequiredAuth>
           } />
         </Route>
           <Route path="update-profile" element={
-           <RequiredAuth currentUser={currentUser}>
+           <RequiredAuth>
             <UpdateProfile/>
           </RequiredAuth>
       } />

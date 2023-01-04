@@ -1,28 +1,17 @@
-import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
-import {
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Nav,
-  NavItem,
-  Navbar,
-  NavbarBrand,
-  NavbarText,
-  NavbarToggler,
-  UncontrolledDropdown,
-} from "reactstrap";
-
-const currentUser = null;
-
-const MainLayout = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = () => setIsOpen(!isOpen);
-
-  return (
-    <>
+// import { useState } from "react";
+// import { Link, Outlet } from "react-router-dom";
+// import {
+//   Collapse,
+//   DropdownItem,
+//   DropdownMenu,
+//   DropdownToggle,
+//   Nav,
+//   NavItem,
+//   Navbar,
+//   NavbarBrand,
+//   NavbarText,
+const MainLayout=()=>{
+  return <Fragment>
       <Navbar expand="md" dark color="dark">
         <NavbarBrand href="/">reactstrap</NavbarBrand>
         <NavbarToggler onClick={toggle} />
@@ -51,9 +40,8 @@ const MainLayout = () => {
           </Link>
         )}
       </Navbar>
-      <Outlet />
-    </>
-  );
-};
-
+    <Outlet/>
+  </Fragment>
+  
+}
 export default MainLayout;

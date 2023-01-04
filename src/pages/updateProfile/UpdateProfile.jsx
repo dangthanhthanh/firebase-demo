@@ -1,10 +1,11 @@
 import { useContext, useState } from "react"
+import { Navigate } from "react-router-dom"
 import { Button, Card, CardBody, Col, Container, Form, FormGroup, Input, Row } from "reactstrap"
 import Avatar from "../../components/avatar/avatar"
 import { AuthContext } from "../../contexts/AuthContext"
 
 export const UpdateProfile=()=>{
-    const {updateProfile}=useContext(AuthContext)
+    const {currentUser,updateProfile}=useContext(AuthContext)
     const [formValue,setFormValue]=useState({
         displayname:'',
         photoURL:''
@@ -18,18 +19,26 @@ export const UpdateProfile=()=>{
             return {...pre,[name]:value} 
         })
     }
-    const onsubmit=async(e)=>{
-        e.prevenDefault()
-        await updateProfile(formValue.displayname,formValue.photoURL)
-        
+    const onChangeImage=(file)=>{
+        setFormValue(pre=>({...pre,photoURL:file}))
     }
+    const onsubmit=async(e)=>{
+        e.preventDefault()
+        await updateProfile(formValue.displayname,formValue.photoURL)
+    }
+    console.log(formValue)
+    console.log(currentUser.displayname)
+    if(currentUser.displayName && currentUser.photoURL){
+        return <Navigate to="/"/>;
+    }
+
     return <Container>
         <Row>
             <Col md={6}>
             <Card>
                 <CardBody>
                     <Form onSubmit={onsubmit}>
-                        <Avatar/>
+                        <Avatar onChangeImage={onChangeImage}/>
                         <FormGroup>
                             <Input type="text" 
                             name="displayname" 
@@ -37,7 +46,7 @@ export const UpdateProfile=()=>{
                             onChange={onchange}/>
                         </FormGroup> 
                         <FormGroup>
-                                <Button>Submit</Button>
+                                <Button>UPDATE</Button>
                         </FormGroup>
                     </Form>
                 </CardBody>

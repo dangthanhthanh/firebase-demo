@@ -1,6 +1,8 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-import { auth, facebookProvider, googleProvider } from "../libs/firebase";
+import { auth, facebookProvider, googleProvider, Storage } from "../libs/firebase";
+import {getDownloadURL, ref,uploadBytes} from 'firebase/storage'
+import { Spinner } from "reactstrap";
 
 export const AuthContext=createContext({
     currentUser:null,
@@ -8,21 +10,30 @@ export const AuthContext=createContext({
     logout:()=>{},
     regiter:()=>{},
     updateProfile:()=>{},
+    uploadAvatarToStorage:()=>{},
 
 })
 const AuthProvider=({children})=>{
     const [loading,setloading]=useState(true);
     const [currentUser,setCurrentUser]=useState(null);
+
+    const uploadAvatarToStorage=async(file)=>{
+        const storageRef = ref(Storage, `avatar/${currentUser.email}`);
+        const snapshot= await uploadBytes(storageRef, file);
+        return snapshot.ref
+    }
     const updateProfileCurrentUser=async(displayName,photoURL)=>{
-        const reponse=await updateProfile(currentUser,{
+        //b1:lay photourl
+        const ref=await uploadAvatarToStorage(photoURL);
+        const photoUrl=await getDownloadURL(ref)
+        await updateProfile(auth.currentUser,{
             displayName,
-            photoURL,
+            photoURL:photoUrl,
         })
-        setCurrentUser((pre)=>({...pre}))
+        setCurrentUser((pre)=>({...pre,displayName,photoURL}))
     }
     const register=async(email,password)=>{
         await createUserWithEmailAndPassword(auth,email,password)
-
     }
     const login=async(type,email,password)=>{
         switch(type){
@@ -36,7 +47,7 @@ const AuthProvider=({children})=>{
                 break;
             default:
                 await signInWithEmailAndPassword(auth,email,password)    
-            break;
+                break;
         }
     }
     const logout= async()=>{await signOut(auth)}
@@ -45,7 +56,8 @@ const AuthProvider=({children})=>{
         login:login,
         logout,
         register,
-        updateProfile:updateProfileCurrentUser
+        updateProfile:updateProfileCurrentUser,
+        uploadAvatarToStorage,
 
     }
     useEffect(() => {
@@ -58,6 +70,6 @@ const AuthProvider=({children})=>{
             setloading(false)
         })
     }, [])
-    return <AuthContext.Provider value={value}>{!loading? children:null}</AuthContext.Provider>
+    return <AuthContext.Provider value={value}>{!loading? children:<Spinner/>}</AuthContext.Provider>
 }
 export default AuthProvider;
