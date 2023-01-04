@@ -27,11 +27,9 @@ export const UpdateProfile=()=>{
         await updateProfile(formValue.displayname,formValue.photoURL)
     }
     console.log(formValue)
-    console.log(currentUser.displayname)
     if(currentUser.displayName && currentUser.photoURL){
         return <Navigate to="/"/>;
     }
-
     return <Container>
         <Row>
             <Col md={6}>

@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
 import { UpdateProfile } from "./pages/updateProfile/UpdateProfile";
+import MainLayout from "./layout/MainLayout";
 const RequiredAuth=({children})=>{
   const {currentUser}=useContext(AuthContext)
   const location=useLocation()
@@ -30,14 +31,16 @@ console.log(currentUser)
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <RequiredAuth>
-              <HomePage/>
-            </RequiredAuth>
-          }
-        />
+        <Route element={<MainLayout/>}>
+          <Route
+            path="/"
+            element={
+              <RequiredAuth>
+                <HomePage/>
+              </RequiredAuth>
+            }
+          />
+        </Route>
         <Route element={<AuthLayout />}>
           <Route path="login" element={
             <NoRequiredAuth>
