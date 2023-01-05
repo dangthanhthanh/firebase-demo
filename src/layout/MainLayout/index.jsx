@@ -7,7 +7,7 @@ const MainLayout=()=>{
   const {currentUser} = useContext(AuthContext);
   const [isOpen,setIsOpen]=useState(false);
   const toggle=()=>setIsOpen(!isOpen);
-  console.log(currentUser.photoURL)
+  console.log(currentUser)
   return <Fragment>
       <Navbar className="my-2"
             color="secondary"
@@ -27,7 +27,7 @@ const MainLayout=()=>{
         {currentUser ? (
           <UncontrolledDropdown inNavbar>
             <DropdownToggle nav caret>
-                <img className="border rounded-circle" src={'https://firebasestorage.googleapis.com/v0/b/shared-movie-1d440.appspot.com/o/avatar%2Fthanh12%40gmail.com?alt=media&token=a1c37a1a-2c7b-4f6e-b592-598010d23d13'} width={50} height={50} />
+                <img className="border rounded-circle" src={currentUser.photoURL} width={50} height={50} />
                 <span className="ms-1"> {currentUser.displayName}</span>
             </DropdownToggle>
             <DropdownMenu direction="down" className="me-2">
@@ -37,10 +37,10 @@ const MainLayout=()=>{
               <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-        ) : (
-          <NavLink to="/auth/login" className="nav-link">
-            <NavbarText>Login</NavbarText>
-          </NavLink>
+        ) : ( null
+          // <NavLink to="/auth/login" className="nav-link">
+          //   <NavbarText>Login</NavbarText>
+          // </NavLink>
         )}
         </Collapse>
       </Navbar>

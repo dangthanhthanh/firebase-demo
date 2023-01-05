@@ -11,7 +11,6 @@ const RequiredAuth=({children})=>{
   const {currentUser}=useContext(AuthContext)
   const location=useLocation()
   if(!currentUser)return <Navigate to="/login"/>;
-  console.log(currentUser)
   if(location.pathname !== '/update-profile' 
   && !currentUser.displayName 
   && !currentUser.photoURL){
@@ -27,7 +26,6 @@ const NoRequiredAuth=({children})=>{
 }
 const AppRoutes = () => {
 const {currentUser} = useContext(AuthContext)
-console.log(currentUser)
   return (
     <BrowserRouter>
       <Routes>
