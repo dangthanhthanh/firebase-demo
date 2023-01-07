@@ -11,13 +11,11 @@ export const UpdateProfile=()=>{
         photoURL:''
     })
     const onchange=(e)=>{
-        console.log(e)
         const{name,value}=e.target;
-        console.log(name,value)
         setFormValue((pre)=>({...pre,[name]:value}));
-        setFormValue((pre)=>{
-            return {...pre,[name]:value} 
-        })
+        // setFormValue((pre)=>{
+        //     return {...pre,[name]:value} 
+        // })
     }
     const onChangeImage=(file)=>{
         setFormValue(pre=>({...pre,photoURL:file}))

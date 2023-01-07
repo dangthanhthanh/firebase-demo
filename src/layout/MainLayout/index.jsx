@@ -1,5 +1,5 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import {Collapse,DropdownItem,DropdownMenu,DropdownToggle,Nav,Navbar,NavbarBrand,NavbarText,NavbarToggler,NavItem,NavLink,UncontrolledDropdown} from 'reactstrap'
 import { AuthContext } from "../../contexts/AuthContext";
 
@@ -7,7 +7,6 @@ const MainLayout=()=>{
   const {currentUser} = useContext(AuthContext);
   const [isOpen,setIsOpen]=useState(false);
   const toggle=()=>setIsOpen(!isOpen);
-  console.log(currentUser)
   return <Fragment>
       <Navbar className="my-2"
             color="secondary"
@@ -19,8 +18,7 @@ const MainLayout=()=>{
           <Nav className="me-auto" navbar>
             <NavItem>
               <NavLink href="/components">components</NavLink>
-            </NavItem>
-            <NavItem>
+              <NavLink href="/sharemovie">Share Movie</NavLink>
               <NavLink href="https://github.com/dangthanhthanh">https://github.com/dangthanhthanh</NavLink>
             </NavItem>
           </Nav>
@@ -37,10 +35,10 @@ const MainLayout=()=>{
               <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-        ) : ( null
-          // <NavLink to="/auth/login" className="nav-link">
-          //   <NavbarText>Login</NavbarText>
-          // </NavLink>
+        ) : ( 
+          <NavLink to="/auth/login" className="nav-link">
+            <NavbarText>Login</NavbarText>
+          </NavLink>
         )}
         </Collapse>
       </Navbar>

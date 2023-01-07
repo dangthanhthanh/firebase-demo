@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { FormGroup, Input, Label } from "reactstrap"
-// import { AuthContext } from "../../contexts/AuthContext";
 const Avatar=({onChangeImage})=>{
-  // const {uploadAvatarToStorage}=useContext(AuthContext)
   const [imageURL,setImageURL]=useState('/vite.svg')
   const onchange=(e)=>{
     const {files}=e.target;
     const path=URL.createObjectURL(files[0])
     setImageURL(path)
-    // uploadAvatarToStorage(files[0])
     onChangeImage(files[0])
   }
   useEffect (() => {

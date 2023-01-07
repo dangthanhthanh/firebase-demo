@@ -23,7 +23,6 @@ const AuthProvider=({children})=>{
         return snapshot.ref
     }
     const updateProfileCurrentUser=async(displayName,photoURL)=>{
-        //b1:lay photourl
         const ref=await uploadAvatarToStorage(photoURL);
         const photoUrl=await getDownloadURL(ref)
         await updateProfile(auth.currentUser,{

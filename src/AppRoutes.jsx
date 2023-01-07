@@ -7,6 +7,8 @@ import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
 import { UpdateProfile } from "./pages/updateProfile/UpdateProfile";
 import MainLayout from "./layout/MainLayout";
+import ShareMoviePage from "./pages/ShareMoviePage";
+import YoutubeProvider from "./contexts/YoutubeContext";
 const RequiredAuth=({children})=>{
   const {currentUser}=useContext(AuthContext)
   const location=useLocation()
@@ -25,11 +27,14 @@ const NoRequiredAuth=({children})=>{
   return children;
 }
 const AppRoutes = () => {
-const {currentUser} = useContext(AuthContext)
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout/>}>
+        <Route element={
+        <YoutubeProvider>
+          <MainLayout/>
+          </YoutubeProvider>
+          }>
           <Route
             path="/"
             element={
@@ -38,6 +43,11 @@ const {currentUser} = useContext(AuthContext)
               </RequiredAuth>
             }
           />
+          <Route path="/sharemovie" element={
+            <RequiredAuth>
+              <ShareMoviePage/>
+            </RequiredAuth>
+          } />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="login" element={
@@ -50,6 +60,7 @@ const {currentUser} = useContext(AuthContext)
               <RegisterPage/>
             </NoRequiredAuth>
           } />
+          
         </Route>
           <Route path="update-profile" element={
            <RequiredAuth>
