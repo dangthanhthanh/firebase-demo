@@ -1,8 +1,9 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-import { auth, facebookProvider, googleProvider, Storage } from "../libs/firebase";
+import { auth, db, facebookProvider, googleProvider, Storage } from "../libs/firebase";
 import {getDownloadURL, ref,uploadBytes} from 'firebase/storage'
 import { Spinner } from "reactstrap";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const AuthContext=createContext({
     currentUser:null,
@@ -11,12 +12,29 @@ export const AuthContext=createContext({
     regiter:()=>{},
     updateProfile:()=>{},
     uploadAvatarToStorage:()=>{},
-
 })
 const AuthProvider=({children})=>{
     const [loading,setloading]=useState(true);
     const [currentUser,setCurrentUser]=useState(null);
-
+    const creactUser=async(user)=>{
+        const data={
+            displayName:user.displayName,
+            email:user.email,
+            photoURL:user.photoURL,
+            id:user.uid
+        }
+        const userRef=doc(db,'user',user.uid)
+        const document=await setDoc(userRef,data)
+        console.log(document)
+    }
+    const creactUserIfNotExit=async(user)=>{
+        const userRef=doc(db,'user',user.uid)
+        const docSnap=await getDoc(userRef)
+        if(docSnap.exists()){
+            return docSnap.data()
+        }
+        creactUser(user)
+    }
     const uploadAvatarToStorage=async(file)=>{
         const storageRef = ref(Storage, `avatar/${currentUser.email}`);
         const snapshot= await uploadBytes(storageRef, file);
@@ -57,11 +75,11 @@ const AuthProvider=({children})=>{
         register,
         updateProfile:updateProfileCurrentUser,
         uploadAvatarToStorage,
-
     }
     useEffect(() => {
-        onAuthStateChanged(auth,(user)=>{
+        onAuthStateChanged(auth,async(user)=>{
             if(user){
+                await creactUserIfNotExit(user)
                 setCurrentUser(user)
             }else{
                 setCurrentUser(null)

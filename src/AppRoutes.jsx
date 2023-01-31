@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import AuthLayout from "./layout/AuthLayout";
-import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { useContext } from "react";
@@ -9,6 +8,7 @@ import { UpdateProfile } from "./pages/updateProfile/UpdateProfile";
 import MainLayout from "./layout/MainLayout";
 import ShareMoviePage from "./pages/ShareMoviePage";
 import YoutubeProvider from "./contexts/YoutubeContext";
+import HomePage from "./pages/HomePage";
 const RequiredAuth=({children})=>{
   const {currentUser}=useContext(AuthContext)
   const location=useLocation()
