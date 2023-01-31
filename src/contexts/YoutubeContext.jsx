@@ -1,4 +1,4 @@
-import { addDoc, collection, getDoc } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
 import {createContext, useContext } from "react";
 import {config} from "../config";
 import { db } from "../libs/firebase";
@@ -13,7 +13,7 @@ const YoutubeProvider=({children})=>{
     const {currentUser}=useContext(AuthContext)
     const getYoutubeVideos=async()=>{
         const videoRef=collection(db,'video');
-        const querySnapshot=await getDoc(videoRef);
+        const querySnapshot=await getDocs(videoRef);
         const youtubeData=[]
         querySnapshot.forEach((doc)=>{
             youtubeData.push(doc.data())
