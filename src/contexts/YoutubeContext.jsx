@@ -1,4 +1,5 @@
-import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { useState } from "react";
 import {createContext, useContext } from "react";
 import {config} from "../config";
 import { db } from "../libs/firebase";
@@ -6,11 +7,14 @@ import { AuthContext } from "./AuthContext";
 
 export const YoutubeContext=createContext({
     shareVideo:(url)=>{},
-    getYoutubeVideos:()=>{}
+    getYoutubeVideos:()=>{},
+    videos:[]
 })
 const youtubeURLPattern=/^((http|https)\:\/\/)?(www\.youtube\.com|youtu\.?be)\/((watch\?v=)?([a-zA-Z0-9]{11}))(&.*)*$/;
 const YoutubeProvider=({children})=>{
+    const [videos,setVideos]=useState([]);
     const {currentUser}=useContext(AuthContext)
+
     const getYoutubeVideos=async()=>{
         const videoRef=collection(db,'video');
         const querySnapshot=await getDocs(videoRef);
@@ -19,9 +23,18 @@ const YoutubeProvider=({children})=>{
             youtubeData.push(doc.data())
         })
         const videoIds=youtubeData.map((items)=>items.videoId)
-        const videos=await validateVideoId(videoIds)
-        console.log(videos)
+        const videosnapshot=await validateVideoId(videoIds)
+        console.log(videosnapshot)
+        const listVideos=videosnapshot.items.map(item=>{
+            return{
+                title:item.snippet.title,
+                descriptsion:item.snippet.description,
+                tags:item.snippet.tags,
+            }
+        })
+        setVideos(listVideos);
     }
+    console.log(videos);
     const getvideoIDFormYoutube=(url)=>{
         return new Promise((resolve,reject)=>{
             const result=url.match(youtubeURLPattern)
@@ -64,7 +77,7 @@ const YoutubeProvider=({children})=>{
         await addDoc(videoRef, data)
 
     }
-    const value={shareVideo,getYoutubeVideos}
+    const value={shareVideo,getYoutubeVideos,videos}
     return <YoutubeContext.Provider value={value}>
             {children}
         </YoutubeContext.Provider>
