@@ -1,0 +1,14 @@
+.state{
+    position: relative;
+}
+.state .video-react-button{
+    padding: 10px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    color:white;
+    background: red;
+    border: none;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+}

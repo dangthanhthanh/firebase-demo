@@ -13,9 +13,6 @@ export const UpdateProfile=()=>{
     const onchange=(e)=>{
         const{name,value}=e.target;
         setFormValue((pre)=>({...pre,[name]:value}));
-        // setFormValue((pre)=>{
-        //     return {...pre,[name]:value} 
-        // })
     }
     const onChangeImage=(file)=>{
         setFormValue(pre=>({...pre,photoURL:file}))
@@ -24,10 +21,10 @@ export const UpdateProfile=()=>{
         e.preventDefault()
         await updateProfile(formValue.displayname,formValue.photoURL)
     }
-    console.log(formValue)
     if(currentUser.displayName && currentUser.photoURL){
         return <Navigate to="/"/>;
     }
+    console.log(formValue)
     return <Container>
         <Row>
             <Col md={6}>

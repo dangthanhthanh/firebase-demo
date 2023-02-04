@@ -9,13 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "bootstrap": "^5.2.3",
     "firebase": "^9.15.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.7.1",
     "react-router-dom": "^6.6.1",
     "reactstrap": "^9.1.5",
-    "uuidv4": "^6.2.13"
+    "redux": "^4.2.1",
+    "uuidv4": "^6.2.13",
+    "video-react": "^0.16.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

@@ -29,17 +29,21 @@ const ShareMoviePage=()=>{
                 setSubmiting(false)
             }
     }
-    return <Row>
+    return <Row style={{
+        display:"flex",
+        justifyContent:"center",
+        marginTop:"40px",
+    }}>
         <Col md={6}>
             <Card>
-            <CardHeader>Share Movie</CardHeader>
+            <CardHeader style={{background:'gray',textAlign:"center"}}>Share Movie</CardHeader>
             <CardBody>
                 <Form md={6} onSubmit={onSubmit}>
                     {err && <Alert color="danger">{err}</Alert>}
                     <FormGroup>
                         <Label for="examplePassword">youtube url</Label>
                         <Input onChange={onChange} type="url" name="youtubeUrl" id="youtubeurl" placeholder="youtube-url" value={formValue.youtubeUrl}/>
-                        <Button disabled={submiting}>Share {submiting && <Spinner size={'sm'}/>}</Button>
+                        <Button style={{width:"100%",marginTop:"10px"}} disabled={submiting}>Share {submiting && <Spinner size={'sm'}/>}</Button>
                     </FormGroup>
                 </Form>
             </CardBody>
